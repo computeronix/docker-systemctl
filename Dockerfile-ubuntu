@@ -1,0 +1,19 @@
+ARG DISTRO="ubuntu"
+ARG VERSION="latest"
+FROM ${DISTRO}:${VERSION}
+ARG DISTRO
+ARG VERSION
+
+LABEL \
+  maintainer="computeronix" \
+  website="https://aka.wf/ai6" \
+  description="docker file ${DISTRO} - ${VERSION}, installs systemctl"
+
+RUN apt-get update \
+  && apt-get -y install systemctl \
+  && rm -rf /var/lib/apt/lists/*
+
+CMD systemctl
+
+HEALTHCHECK --interval=60s --timeout=5s \
+  CMD systemctl --version || exit 1
